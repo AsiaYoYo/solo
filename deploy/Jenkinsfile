@@ -38,7 +38,7 @@ podTemplate(label: 'jnlp-slave', cloud: 'kubernetes', containers: [
           sed -i "/xtdockerhub.com/{s/latest/${Tag}/}" deploy.yaml
           sed -i "s/environment/${Env}/" deploy.yaml
           ''' 
-          kubernetesDeploy configs: 'deploy/deploy.yaml', kubeConfig: [path: ''], kubeconfigId: 'd05c6cec-5925-4dcf-8df4-265e3d922fa6', secretName: '', ssh: [sshCredentialsId: '*', sshServer: ''], textCredentials: [certificateAuthorityData: '', clientCertificateData: '', clientKeyData: '', serverUrl: 'https://']
+          kubernetesDeploy configs: 'deploy/deploy.yaml', kubeConfig: [path: '/var/lib/jenkins/workspace/.kube/config'], kubeconfigId: 'd05c6cec-5925-4dcf-8df4-265e3d922fa6', secretName: '', ssh: [sshCredentialsId: '*', sshServer: ''], textCredentials: [certificateAuthorityData: '', clientCertificateData: '', clientKeyData: '', serverUrl: 'https://']
       }
       stage('Testing'){
           echo "Testing..."
