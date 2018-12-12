@@ -35,18 +35,18 @@ spec:
           requests:
             cpu: 300m
             memory: 100Mi
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 8080
-          initialDelaySeconds: 60
-          timeoutSeconds: 20
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 8080
-          initialDelaySeconds: 60
-          timeoutSeconds: 20
+#        livenessProbe:
+#          httpGet:
+#            path: /
+#            port: 8080
+#          initialDelaySeconds: 60
+#          timeoutSeconds: 20
+#        readinessProbe:
+#          httpGet:
+#            path: /
+#            port: 8080
+#          initialDelaySeconds: 60
+#          timeoutSeconds: 20
         volumeMounts:
         - name: jdk
           mountPath: /usr/local/jdk
