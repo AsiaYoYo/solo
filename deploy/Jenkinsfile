@@ -37,8 +37,8 @@ podTemplate(label: 'jnlp-slave', cloud: 'kubernetes', containers: [
           cd deploy 
           sed -i "/xtdockerhub.com/{s/latest/${Tag}/}" deploy.yaml
           sed -i "s/environment/${Env}/" deploy.yaml
+          sshpass -p \'xietong123\' ssh root@192.168.11.142 "kubectl create -f deploy.yaml;exit"
           ''' 
-          kubernetesDeploy configs: 'deploy/deploy.yaml', ssh: [sshCredentialsId: 'd8c6749a-1c79-4f83-a4bb-8fc9dee0d84c', sshServer: '192.168.11.142']
       }
       stage('Testing'){
           echo "Testing..."
