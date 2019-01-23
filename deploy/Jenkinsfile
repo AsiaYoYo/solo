@@ -1,7 +1,7 @@
 podTemplate(label: 'jnlp-slave', cloud: 'kubernetes', containers: [
     containerTemplate(
         name: 'jnlp', 
-        image: 'xtdockerhub.com/ops/jenkins-slave', 
+        image: '192.168.160.172/ops/jenkins-slave', 
         alwaysPullImage: true 
     ),
   ],
@@ -16,7 +16,7 @@ podTemplate(label: 'jnlp-slave', cloud: 'kubernetes', containers: [
 {
   node("jnlp-slave"){
       stage('Git Checkout'){
-         checkout([$class: 'GitSCM', branches: [[name: '${Tag}']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'f6698074-d226-4fe7-a915-ebc8510eab63', url: 'https://github.com/AsiaYoYo/solo.git']]])
+         checkout([$class: 'GitSCM', branches: [[name: '${Tag}']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '07abea01-3c31-4630-bee9-b1b33dc2422d', url: 'https://github.com/AsiaYoYo/solo.git']]])
       }
       stage('Unit Testing'){
       	echo "Unit Testing..."
@@ -26,19 +26,18 @@ podTemplate(label: 'jnlp-slave', cloud: 'kubernetes', containers: [
       }
       stage('Build and Push Image'){
           sh '''
-          echo "192.168.11.211 xtdockerhub.com" >> /etc/hosts
-          docker login -u dev -p Dev12345 xtdockerhub.com
-          docker build -t xtdockerhub.com/project/solo:${Tag} -f deploy/Dockerfile .
-          docker push xtdockerhub.com/project/solo:${Tag}
+          docker login -u admin -p 111111 192.168.160.172
+          docker build -t 192.168.160.172/project/solo:${Tag} -f deploy/Dockerfile .
+          docker push 192.168.160.172/project/solo:${Tag}
           '''
       }
       stage('Deploy to K8S'){
           sh '''
           cd deploy 
-          sed -i "/xtdockerhub.com/{s/latest/${Tag}/}" deploy.yaml
+          sed -i "/192.168.160.172/{s/latest/${Tag}/}" deploy.yaml
           sed -i "s/environment/${Env}/" deploy.yaml
           '''
-          kubernetesDeploy configs: 'deploy/deploy.yaml', kubeConfig: [path: ''], kubeconfigId: 'ac5bf8e1-c74f-406b-8565-f15e664b4b9f', secretName: '', ssh: [sshCredentialsId: '*', sshServer: ''], textCredentials: [certificateAuthorityData: '', clientCertificateData: '', clientKeyData: '', serverUrl: 'https://']
+          kubernetesDeploy configs: 'deploy/deploy.yaml', kubeConfig: [path: ''], kubeconfigId: '3acda948-a455-40ca-94c3-87ce5e6358a8', secretName: '', ssh: [sshCredentialsId: '*', sshServer: ''], textCredentials: [certificateAuthorityData: '', clientCertificateData: '', clientKeyData: '', serverUrl: 'https://']
       }
       stage('Testing'){
           echo "Testing..."
